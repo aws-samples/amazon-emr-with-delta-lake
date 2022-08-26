@@ -43,10 +43,15 @@ It provides code snippets that show how to read from and write to Delta tables w
 
 | Delta lake version | Apache Spark version |
 |--------------------|----------------------|
+| 2.0.x | 3.2.x |
+| 1.2.x | 3.2.x |
 | 1.1.x | 3.2.x |
 | 1.0.x | 3.1.x |
 | 0.7.x and 0.8.x | 3.0.x |
 | Below 0.7.x | 2.4.2 - 2.4.<i>\<latest\></i> |
+:information_source: **<i>The above table lists are lastly updated on 26 Aug 2022</i>**
+
+ * More infomration at: [Delta Lake releases](https://docs.delta.io/latest/releases.html)
 
 ## References
 
