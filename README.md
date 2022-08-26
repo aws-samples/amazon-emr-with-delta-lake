@@ -55,6 +55,7 @@ It provides code snippets that show how to read from and write to Delta tables w
  * [Compatibility with Apache Spark](https://docs.delta.io/latest/releases.html#compatibility-with-apache-spark)
  * [Application versions in Amazon EMR 6.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-6.x.html)
  * [Application versions in Amazon EMR 5.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-5.x.html)
+ * [Delta Lake releases](https://docs.delta.io/latest/releases.html)
  * [Delta Core Maven Repository](https://mvnrepository.com/artifact/io.delta/delta-core)
  * [Set up Apache Spark with Delta Lake](https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta-lake)
  * [Presto and Athena to Delta Lake integration](https://docs.delta.io/1.0.0/presto-integration.html)
