@@ -36,7 +36,7 @@ It provides code snippets that show how to read from and write to Delta tables w
   }
   </pre>
 
-  * YOU MUST REPLACE <i>{version}</i> with the appropriate one
+  * :warning: **YOU MUST REPLACE** <i>{version}</i> with the appropriate one
   * For more details, check [this](https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta-lake)
 
 ## Compatibility with Apache Spark
