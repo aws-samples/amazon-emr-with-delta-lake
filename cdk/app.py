@@ -87,7 +87,7 @@ class EmrStack(Stack):
       ],
       ebs_root_volume_size=10,
       log_uri="s3n://aws-logs-{account}-{region}/elasticmapreduce/".format(account=cdk.Aws.ACCOUNT_ID, region=cdk.Aws.REGION),
-      release_label="emr-6.3.1",
+      release_label="emr-6.7.0",
       scale_down_behavior="TERMINATE_AT_TASK_COMPLETION",
       # tags=[cdk.CfnTag(
       #   key="for-use-with-amazon-emr-managed-policies",
