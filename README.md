@@ -7,12 +7,15 @@ It provides code snippets that show how to read from and write to Delta tables w
 ## Quickstart
 
 1. Create s3 bucket for delta lake (e.g. `learn-deltalake-2022`)
-2. Create EMR Cluster using AWS CDK. (Check details in [instructions](./cdk/INSTRUCTIONS.md))
-3. Open the Amazon EMR console at [https://console.aws.amazon.com/elasticmapreduce/](https://console.aws.amazon.com/elasticmapreduce/)
-4. Create Jupyter Notebook
-5. Upload `deltalake-with-emr-demo.ipynb` into Jupyter Notebook
-6. Set kernel to PySpark, and Run each cells
-7. For run Amazn Athena queries on Delta Lake, Check [this](./amazon_athena_queries_on_deltalake.md)
+2. Create an EMR Cluster using AWS CDK. (Check details in [instructions](./cdk/emr-cluster/INSTRUCTIONS.md))
+3. Create an EMR Studio using AWS CDK. (Check details in [instructions](./cdk/emr-studio/INSTRUCTIONS.md))
+4. Open the Amazon EMR console at [https://console.aws.amazon.com/elasticmapreduce/](https://console.aws.amazon.com/elasticmapreduce/)
+5. Open the EMR Studio and create an EMR Studio Workspace
+6. Launch the EMR Studio Workspace
+7. Attach the EMR Cluster to a Jupyter Notebook
+8. Upload `deltalake-with-emr-demo.ipynb` into the Jupyter Notebook
+9. Set kernel to PySpark, and Run each cells
+10. For run Amazn Athena queries on Delta Lake, Check [this](./amazon_athena_queries_on_deltalake.md)
 
 ## Key Configurations
 
