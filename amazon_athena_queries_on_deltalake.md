@@ -19,7 +19,7 @@ PARTITIONED BY (route_id string)
 ROW FORMAT SERDE 'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
 STORED AS INPUTFORMAT 'org.apache.hadoop.hive.ql.io.SymlinkTextInputFormat'
 OUTPUTFORMAT 'org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat'
-LOCATION 's3://<i>your-s3-location</i>/_symlink_format_manifest/';
+LOCATION 's3://<i>your-s3-location-for-delta-hive-table</i>/_symlink_format_manifest/';
 </pre>
 
 ### 3. Repair partitions
