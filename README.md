@@ -15,7 +15,7 @@ It provides code snippets that show how to read from and write to Delta tables w
 7. Attach the EMR Cluster to a Jupyter Notebook
 8. Upload `deltalake-with-emr-demo.ipynb` into the Jupyter Notebook
 9. Set kernel to PySpark, and Run each cells
-10. For run Amazn Athena queries on Delta Lake, Check [this](./amazon_athena_queries_on_deltalake.md)
+10. For running Amazon Athena queries on Delta Lake, Check [this](./amazon_athena_queries_on_deltalake.md)
 
 ## Key Configurations
 
