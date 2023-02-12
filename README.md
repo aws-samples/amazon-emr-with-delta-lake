@@ -2,7 +2,7 @@
 
 This guide helps you quickly explore the main features of Delta Lake.
 It provides code snippets that show how to read from and write to Delta tables with Amazon EMR.
-<br/>For more details, check [this video](https://youtu.be/l1lDAh2bKsU?t=245)
+<br/>For more details, check [this video, "Incremental Data Processing using Delta Lake with EMR"](https://youtu.be/l1lDAh2bKsU?t=245)
 
 ## Quickstart
 
@@ -61,6 +61,8 @@ It provides code snippets that show how to read from and write to Delta tables w
 
  * [(video) Incremental Data Processing using Delta Lake with EMR](https://youtu.be/l1lDAh2bKsU)
  * [(video) DBT + Spark/EMR + Delta Lake/S3](https://youtu.be/B1zEKtoD8QY)
+ * [An Introduction to Modern Data Lake Storage Layers (2022-02-22)](https://dacort.dev/posts/modern-data-lake-storage-layers/)
+   * [(github) Modern Data Lake Storage Layers](https://github.com/dacort/modern-data-lake-storage-layers)
  * [Compatibility with Apache Spark](https://docs.delta.io/latest/releases.html#compatibility-with-apache-spark)
  * [Application versions in Amazon EMR 6.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-6.x.html)
  * [Application versions in Amazon EMR 5.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-5.x.html)
