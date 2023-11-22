@@ -122,5 +122,6 @@ Before cleaning up the emr cluster, you need to tunrn off EMR `Termination prote
  * [aws emr create-default-roles](https://docs.aws.amazon.com/cli/latest/reference/emr/create-default-roles.html)
  * [When I create an Amazon EMR cluster, I get an "EMR_DefaultRole is invalid" or "EMR_EC2_DefaultRole is invalid" error](https://aws.amazon.com/premiumsupport/knowledge-center/emr-default-role-invalid/)
  * [aws ec2-instance-connect ssh](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2-instance-connect/ssh.html) - Connect to your EC2 instance using your OpenSSH client.
+ * [Spark 3.2.1 Configuration](https://spark.apache.org/docs/3.2.1/configuration.html)
 
 Enjoy!
