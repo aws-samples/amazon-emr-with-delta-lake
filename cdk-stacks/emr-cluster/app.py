@@ -15,19 +15,13 @@ class EmrStack(Stack):
   def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
     super().__init__(scope, construct_id, **kwargs)
 
-    EMR_EC2_KEY_PAIR_NAME = cdk.CfnParameter(self, 'EMREC2KeyPairName',
-      type='String',
-      description='Amazon EMR EC2 Instance KeyPair name',
-      default='emr'
-    )
-
     EMR_CLUSTER_NAME = cdk.CfnParameter(self, 'EMRClusterName',
       type='String',
       description='Amazon EMR Cluster name',
       default='deltalake-demo'
     )
 
-    vpc_name = self.node.try_get_context("vpc_name")
+    vpc_name = self.node.try_get_context("vpc_name") or "default"
     vpc = aws_ec2.Vpc.from_lookup(self, "ExistingVPC",
       is_default=True,
       vpc_name=vpc_name)
