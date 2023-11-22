@@ -28,7 +28,7 @@ class EmrStudioStack(Stack):
     # for example,
     # cdk -c vpc_name=your-existing-vpc syth
     #
-    vpc_name = self.node.try_get_context("vpc_name")
+    vpc_name = self.node.try_get_context("vpc_name") or "default"
     vpc = aws_ec2.Vpc.from_lookup(self, "ExistingVPC",
       is_default=True,
       vpc_name=vpc_name)
@@ -109,7 +109,7 @@ class EmrStudioStack(Stack):
         "arn:aws:ec2:*:*:security-group/*"
       ]
     }))
-   
+
     emr_studio_service_role_policy_doc.add_statements(aws_iam.PolicyStatement(**{
       "sid": "AllowEC2SecurityGroupActions",
       "effect": aws_iam.Effect.ALLOW,
@@ -240,7 +240,7 @@ class EmrStudioStack(Stack):
 
     emr_studio_service_role = aws_iam.Role(self, 'EmrStudioServiceRole',
       role_name=f'{EMR_STUDIO_NAME}_EMRStudio_Service_Role',
-      assumed_by=aws_iam.ServicePrincipal('elasticmapreduce.amazonaws.com'), 
+      assumed_by=aws_iam.ServicePrincipal('elasticmapreduce.amazonaws.com'),
       inline_policies={
         f'{EMR_STUDIO_NAME}_EMRStudioServiceRolePolicy': emr_studio_service_role_policy_doc
       }
