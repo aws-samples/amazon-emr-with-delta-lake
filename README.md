@@ -12,7 +12,14 @@ It provides code snippets that show how to read from and write to Delta tables w
 4. Open the Amazon EMR console at [https://console.aws.amazon.com/elasticmapreduce/](https://console.aws.amazon.com/elasticmapreduce/)
 5. Open the EMR Studio and create an **EMR Studio Workspace**
 6. Launch the EMR Studio Workspace
-7. Attach the EMR Cluster to a Jupyter Notebook (For more information, see [here](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-create-use-clusters.html))
+7. Attach the EMR Cluster to a Jupyter Notebook by following quick guide:
+
+   On the EMR Studio Workspace Web Console.
+   - Step 1. Create a new workspace without attaching the EMR cluster.
+   - Step 2. Stop the workspace.
+   - Step 3. Select the stopped workspace and restart it with **Launch with options**.
+
+    :information_source: More information can be found [here](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-create-use-clusters.html).
 8. Upload `deltalake-with-emr-demo.ipynb` into the Jupyter Notebook
 9. Set kernel to PySpark, and Run each cells
 10. For running Amazon Athena queries on Delta Lake, Check [this](./amazon_athena_queries_on_deltalake.md)
@@ -55,7 +62,7 @@ It provides code snippets that show how to read from and write to Delta tables w
 
 ## Compatibility with Apache Spark
 
-:information_source: **<i>The following table lists are lastly updated on 26 Aug 2022</i>**
+:information_source: **<i>The following table lists are lastly updated on 3 Aug 2024</i>**
 
 | Delta lake version | Apache Spark version |
 |--------------------|----------------------|
