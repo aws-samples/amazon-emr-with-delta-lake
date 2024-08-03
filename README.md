@@ -12,7 +12,7 @@ It provides code snippets that show how to read from and write to Delta tables w
 4. Open the Amazon EMR console at [https://console.aws.amazon.com/elasticmapreduce/](https://console.aws.amazon.com/elasticmapreduce/)
 5. Open the EMR Studio and create an **EMR Studio Workspace**
 6. Launch the EMR Studio Workspace
-7. Attach the EMR Cluster to a Jupyter Notebook
+7. Attach the EMR Cluster to a Jupyter Notebook (For more information, see [here](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-create-use-clusters.html))
 8. Upload `deltalake-with-emr-demo.ipynb` into the Jupyter Notebook
 9. Set kernel to PySpark, and Run each cells
 10. For running Amazon Athena queries on Delta Lake, Check [this](./amazon_athena_queries_on_deltalake.md)
@@ -48,6 +48,13 @@ It provides code snippets that show how to read from and write to Delta tables w
 
 | Delta lake version | Apache Spark version |
 |--------------------|----------------------|
+| 3.2.x | 3.5.x |
+| 3.1.x | 3.5.x |
+| 3.0.x | 3.5.x |
+| 2.4.x | 3.4.x |
+| 2.3.x | 3.3.x |
+| 2.2.x | 3.3.x |
+| 2.1.x | 3.3.x |
 | 2.0.x | 3.2.x |
 | 1.2.x | 3.2.x |
 | 1.1.x | 3.2.x |
@@ -64,14 +71,16 @@ It provides code snippets that show how to read from and write to Delta tables w
  * [An Introduction to Modern Data Lake Storage Layers (2022-02-22)](https://dacort.dev/posts/modern-data-lake-storage-layers/)
    * [(github) Modern Data Lake Storage Layers](https://github.com/dacort/modern-data-lake-storage-layers)
  * [Compatibility with Apache Spark](https://docs.delta.io/latest/releases.html#compatibility-with-apache-spark)
- * [Application versions in Amazon EMR 6.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-6.x.html)
- * [Application versions in Amazon EMR 5.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-5.x.html)
+ * [Amazon EMR Releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-components.html)
+   * [Application versions in Amazon EMR 6.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-6.x.html)
+   * [Application versions in Amazon EMR 5.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-5.x.html)
  * [Delta Lake releases](https://docs.delta.io/latest/releases.html)
  * [Delta Core Maven Repository](https://mvnrepository.com/artifact/io.delta/delta-core)
  * [Set up Apache Spark with Delta Lake](https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta-lake)
  * [Presto and Athena to Delta Lake integration](https://docs.delta.io/1.0.0/presto-integration.html)
  * [Redshift Spectrum to Delta Lake integration](https://docs.delta.io/1.0.0/redshift-spectrum-integration.html)
  * [Support for automatic and incremental Presto/Athena manifest generation (#453)](https://github.com/delta-io/delta/releases/tag/v0.7.0)
+ * [Amazon EMR Attach a compute to an EMR Studio Workspace](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-create-use-clusters.html)
 
 ## Security
 
