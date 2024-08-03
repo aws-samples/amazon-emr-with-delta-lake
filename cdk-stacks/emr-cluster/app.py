@@ -26,6 +26,10 @@ class EmrStack(Stack):
       is_default=True,
       vpc_name=vpc_name)
 
+    #XXX: For creating Amazon EMR in a new VPC,
+    # remove comments from the below codes and
+    # comments out vpc = aws_ec2.Vpc.from_lookup(..) codes above,
+    #
     # vpc = aws_ec2.Vpc(self, "EMRStackVPC",
     #   max_azs=2,
     #   gateway_endpoints={
@@ -48,16 +52,16 @@ class EmrStack(Stack):
         instance_type="m5.xlarge",
         market="ON_DEMAND"
       ),
-      termination_protected=True
+      termination_protected=False
     )
 
+    emr_version = self.node.try_get_context("emr_version") or "emr-7.2.0"
     emr_cfn_cluster = aws_emr.CfnCluster(self, "MyEMRCluster",
       instances=emr_instances,
       # In order to use the default role for `job_flow_role`, you must have already created it using the CLI or console
       job_flow_role="EMR_EC2_DefaultRole",
       name=EMR_CLUSTER_NAME.value_as_string,
-      # service_role="EMR_DefaultRole_V2",
-      service_role="EMR_DefaultRole",
+      service_role="EMR_DefaultRole_V2",
       applications=[
         aws_emr.CfnCluster.ApplicationProperty(name="Hadoop"),
         aws_emr.CfnCluster.ApplicationProperty(name="Hive"),
@@ -69,6 +73,11 @@ class EmrStack(Stack):
       bootstrap_actions=None,
       configurations=[
         aws_emr.CfnCluster.ConfigurationProperty(
+          classification="delta-defaults",
+          configuration_properties={
+            "delta.enabled": "true"
+          }),
+        aws_emr.CfnCluster.ConfigurationProperty(
           classification="hive-site",
           configuration_properties={
             "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
@@ -79,14 +88,10 @@ class EmrStack(Stack):
             "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory"
           })
       ],
-      ebs_root_volume_size=10,
+      ebs_root_volume_size=32,
       log_uri="s3n://aws-logs-{account}-{region}/elasticmapreduce/".format(account=cdk.Aws.ACCOUNT_ID, region=cdk.Aws.REGION),
-      release_label="emr-6.7.0",
+      release_label=emr_version,
       scale_down_behavior="TERMINATE_AT_TASK_COMPLETION",
-      # tags=[cdk.CfnTag(
-      #   key="for-use-with-amazon-emr-managed-policies",
-      #   value="true"
-      # )],
       visible_to_all_users=True
     )
 

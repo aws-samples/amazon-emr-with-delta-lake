@@ -28,19 +28,30 @@ It provides code snippets that show how to read from and write to Delta tables w
   - Apache Spark (>= 3.0)
 
 - Apache Spark (PySpark)
-
-  <pre>
-  {
-    "conf": {
-      "spark.jars.packages": "io.delta:delta-core_2.12:<i>{version}</i>",
-      "spark.sql.extensions": "io.delta.sql.DeltasparkSessionExtension",
-      "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog",
+  - For `emr-6.7.0` version
+    <pre>
+    {
+      "conf": {
+        "spark.jars.packages": "<i>io.delta:delta-core_2.12:1.2.1</i>",
+        "spark.sql.extensions": "io.delta.sql.DeltasparkSessionExtension",
+        "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog"
+      }
     }
-  }
-  </pre>
+    </pre>
+  - For `emr-6.15.0` or higher version
+    <pre>
+    {
+      "conf": {
+        "spark.jars.packages": "<i>io.delta:delta-spark_2.13:3.1.0</i>",
+        "spark.sql.extensions": "io.delta.sql.DeltasparkSessionExtension",
+        "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog"
+        "spark.sql.catalog.spark_catalog.lf.managed": "true"
+      }
+    }
+    </pre>
 
-  * :warning: **YOU MUST REPLACE** <i>{version}</i> with the appropriate one
-  * For more details, check [this](https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta-lake)
+  * :warning: **YOU NEED** to configure `spark.jar.packages` according to the Delta version that matches your Spark version.
+  * For more details, check [[1]](https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta-lake), [[2]](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/Deltausing-cluster-spark.html).
 
 ## Compatibility with Apache Spark
 
@@ -72,6 +83,7 @@ It provides code snippets that show how to read from and write to Delta tables w
    * [(github) Modern Data Lake Storage Layers](https://github.com/dacort/modern-data-lake-storage-layers)
  * [Compatibility with Apache Spark](https://docs.delta.io/latest/releases.html#compatibility-with-apache-spark)
  * [Amazon EMR Releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-components.html)
+   * [Application versions in Amazon EMR 7.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-7.x.html)
    * [Application versions in Amazon EMR 6.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-6.x.html)
    * [Application versions in Amazon EMR 5.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-5.x.html)
  * [Delta Lake releases](https://docs.delta.io/latest/releases.html)
@@ -80,7 +92,7 @@ It provides code snippets that show how to read from and write to Delta tables w
  * [Presto and Athena to Delta Lake integration](https://docs.delta.io/1.0.0/presto-integration.html)
  * [Redshift Spectrum to Delta Lake integration](https://docs.delta.io/1.0.0/redshift-spectrum-integration.html)
  * [Support for automatic and incremental Presto/Athena manifest generation (#453)](https://github.com/delta-io/delta/releases/tag/v0.7.0)
- * [Amazon EMR Attach a compute to an EMR Studio Workspace](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-create-use-clusters.html)
+ * [Amazon EMR - Attach a compute to an EMR Studio Workspace](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-create-use-clusters.html)
 
 ## Security
 

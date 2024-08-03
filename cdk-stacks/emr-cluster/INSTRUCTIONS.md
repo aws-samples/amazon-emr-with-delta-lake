@@ -12,6 +12,8 @@ directory.  To create the virtualenv it assumes that there is a `python3`
 package. If for any reason the automatic creation of the virtualenv fails,
 you can create the virtualenv manually.
 
+## Set up Environment
+
 To manually create a virtualenv on MacOS and Linux:
 
 ```
@@ -36,6 +38,20 @@ Once the virtualenv is activated, you can install the required dependencies.
 ```
 (.venv) $ pip install -r requirements.txt
 ```
+
+## Prerequsites
+
+To deploy an Amazon EMR cluster, we need to configure the IAM service roles used by Amazon EMR.
+
+We can create the default roles for EMR by running the following command:
+
+```
+$ aws emr create-default-roles
+```
+
+:information_source: For more information about IAM Roles for Amazon EMR, see [here](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-iam-roles.html).
+
+## Deployment
 
 At this point you can now synthesize the CloudFormation template for this code.
 You pass context variable such as `vcp_name=<your vpc name>` (e.g. `vpc_name='default'`) in order to use the existing VPC.
@@ -116,12 +132,16 @@ Before cleaning up the emr cluster, you need to tunrn off EMR `Termination prote
 
 ## References
 
- * [Application versions in Amazon EMR 6.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-6.x.html)
- * [Application versions in Amazon EMR 5.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-5.x.html)
+ * [Amazon EMR Release Guide](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-components.html)
+   * [Application versions in Amazon EMR 7.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-7.x.html)
+   * [Application versions in Amazon EMR 6.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-6.x.html)
+   * [Application versions in Amazon EMR 5.x releases](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-release-app-versions-5.x.html)
  * [Amzon EMR Best Practices Guides](https://aws.github.io/aws-emr-best-practices/)
- * [aws emr create-default-roles](https://docs.aws.amazon.com/cli/latest/reference/emr/create-default-roles.html)
- * [When I create an Amazon EMR cluster, I get an "EMR_DefaultRole is invalid" or "EMR_EC2_DefaultRole is invalid" error](https://aws.amazon.com/premiumsupport/knowledge-center/emr-default-role-invalid/)
+ * [Configure IAM service roles for Amazon EMR permissions to AWS services and resources](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-iam-roles.html)
+   * [aws emr create-default-roles](https://docs.aws.amazon.com/cli/latest/reference/emr/create-default-roles.html)
+   * [When I create an Amazon EMR cluster, I get an "EMR_DefaultRole is invalid" or "EMR_EC2_DefaultRole is invalid" error](https://aws.amazon.com/premiumsupport/knowledge-center/emr-default-role-invalid/)
  * [aws ec2-instance-connect ssh](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/ec2-instance-connect/ssh.html) - Connect to your EC2 instance using your OpenSSH client.
  * [Spark 3.2.1 Configuration](https://spark.apache.org/docs/3.2.1/configuration.html)
+ * [Amazon EMR Release Guide - Delta Lake](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/emr-delta.html)
 
 Enjoy!
