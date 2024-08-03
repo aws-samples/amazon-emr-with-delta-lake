@@ -43,7 +43,7 @@ class EmrStudioStack(Stack):
     #     )
     #   }
     # )
-    EMR_STUDIO_NAME = self.node.try_get_context("emr_studio_name")
+    EMR_STUDIO_NAME = self.node.try_get_context("emr_studio_name") or "deltalake-demo"
 
     S3_BUCKET_SUFFIX = ''.join(random.sample((string.ascii_lowercase + string.digits), k=7))
     s3_bucket = s3.Bucket(self, "s3bucket",
