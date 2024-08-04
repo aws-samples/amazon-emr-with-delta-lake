@@ -95,6 +95,9 @@ class EmrStack(Stack):
       visible_to_all_users=True
     )
 
+    cdk.CfnOutput(self, 'EmrCluserName', value=emr_cfn_cluster.name)
+    cdk.CfnOutput(self, 'EmrVersion', value=emr_cfn_cluster.release_label)
+
 
 app = cdk.App()
 EmrStack(app, "EmrStack", env=cdk.Environment(
