@@ -45,7 +45,7 @@ It provides code snippets that show how to read from and write to Delta tables w
       }
     }
     </pre>
-  - For `emr-6.15.0` or higher version
+  - For `emr-6.9.0` or higher version
     <pre>
     {
       "conf": {
@@ -58,7 +58,7 @@ It provides code snippets that show how to read from and write to Delta tables w
     </pre>
 
   * :warning: **YOU NEED** to configure `spark.jar.packages` according to the Delta version that matches your Spark version.
-  * For more details, check [[1]](https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta-lake), [[2]](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/Deltausing-cluster-spark.html).
+  * For more details, check [[1] Set up Apache Spark with Delta Lake](https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta-lake), [[2] Use a Delta Lake cluster with Spark](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/Deltausing-cluster-spark.html).
 
 ## Compatibility with Apache Spark
 
