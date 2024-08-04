@@ -57,7 +57,7 @@ Use cdk `deploy command` to create the stack shown above.
               -c emr_studio_name="<i>your-emr-studio-name</i>"
 </pre>
 
-For example, 
+For example,
 <pre>
 (.venv) $ cdk deploy --require-approval never \
               -c vpc_name="<i>default</i>" \
@@ -84,7 +84,7 @@ EmrStudioStack.EmrStudioUrl = https://es-KWX8LX799XYDYTL7SAWH75UV.emrstudio-prod
 
 ## Quick Start
 
-After an EMR Studio is successfully created, click EMR Studio Url (check out `EmrStudioUrl` in CloudFormation Outputs section, e.g., https://es-KWX8LX799XYDYTL7SAWH75UV.emrstudio-prod.us-east-1.amazonaws.com).
+After an EMR Studio is successfully created, click EMR Studio Url (check out `EmrStudioUrl` in CloudFormation Outputs section, e.g., `https://es-KWX8LX799XYDYTL7SAWH75UV.emrstudio-prod.us-east-1.amazonaws.com`).
 
 When you use an EMR Studio, you can create and configure different Workspaces to organize and run notebooks.
 
