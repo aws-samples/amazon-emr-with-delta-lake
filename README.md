@@ -1,4 +1,4 @@
-# Deltalake with Amazon EMR
+# Delta Lake OSS with Amazon EMR
 
 This guide helps you quickly explore the main features of Delta Lake.
 It provides code snippets that show how to read from and write to Delta tables with Amazon EMR.
