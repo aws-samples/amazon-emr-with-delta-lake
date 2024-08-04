@@ -70,7 +70,7 @@ It provides code snippets that show how to read from and write to Delta tables w
 
   > :warning: **YOU NEED** to configure `spark.jar.packages` according to the Delta version that matches your Spark version.
 
-  > :information_source: For more details on `spark.jar.packages`, see [Apache Spark Configuration - Application Properties](https://spark.apache.org/docs/latest/configuration.html#application-properties)
+  > :information_source: For more details on `spark.jar.packages`, see [Apache Spark Configuration - Runtime Environment](https://spark.apache.org/docs/latest/configuration.html#runtime-environment)
 
   > See also [[1] Set up Apache Spark with Delta Lake](https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta-lake), [[2] Use a Delta Lake cluster with Spark](https://docs.aws.amazon.com/emr/latest/ReleaseGuide/Deltausing-cluster-spark.html).
 
@@ -111,7 +111,7 @@ It provides code snippets that show how to read from and write to Delta tables w
  * [`io.delta` Maven Repository](https://mvnrepository.com/artifact/io.delta)
    * [delta-core](https://mvnrepository.com/artifact/io.delta/delta-core)
    * [delta-spark](https://mvnrepository.com/artifact/io.delta/delta-spark)
- * [Apache Spark Configuration - Application Properties](https://spark.apache.org/docs/latest/configuration.html#application-properties)
+ * [Apache Spark Configuration - Runtime Environment](https://spark.apache.org/docs/latest/configuration.html#runtime-environment)
  * [Set up Apache Spark with Delta Lake](https://docs.delta.io/latest/quick-start.html#set-up-apache-spark-with-delta-lake)
  * [Presto and Athena to Delta Lake integration](https://docs.delta.io/1.0.0/presto-integration.html)
  * [Redshift Spectrum to Delta Lake integration](https://docs.delta.io/1.0.0/redshift-spectrum-integration.html)
