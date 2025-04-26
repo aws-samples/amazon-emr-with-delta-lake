@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import os
-import random
-import string
 
 import aws_cdk as cdk
 
@@ -14,7 +12,6 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-random.seed(31)
 
 class EmrStudioStack(Stack):
 
@@ -28,28 +25,30 @@ class EmrStudioStack(Stack):
     # for example,
     # cdk -c vpc_name=your-existing-vpc syth
     #
-    vpc_name = self.node.try_get_context("vpc_name") or "default"
-    vpc = aws_ec2.Vpc.from_lookup(self, "ExistingVPC",
-      is_default=True,
-      vpc_name=vpc_name)
+    if str(os.environ.get('USE_DEFAULT_VPC', 'false')).lower() == 'true':
+      vpc_name = self.node.try_get_context('vpc_name') or "default"
+      vpc = aws_ec2.Vpc.from_lookup(self, 'ExistingVPC',
+        is_default=True,
+        vpc_name=vpc_name
+      )
+    else:
+      # XXX: To use more than 2 AZs, be sure to specify the account and region on your stack.
+      # XXX: https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_ec2/Vpc.html
+      vpc = aws_ec2.Vpc(self, "EmrStudioVPC",
+        max_azs=2,
+        gateway_endpoints={
+          "S3": aws_ec2.GatewayVpcEndpointOptions(
+            service=aws_ec2.GatewayVpcEndpointAwsService.S3
+          )
+        }
+      )
 
-    #XXX: To use more than 2 AZs, be sure to specify the account and region on your stack.
-    #XXX: https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_ec2/Vpc.html
-    # vpc = aws_ec2.Vpc(self, "EmrStudioVPC",
-    #   max_azs=2,
-    #   gateway_endpoints={
-    #     "S3": aws_ec2.GatewayVpcEndpointOptions(
-    #       service=aws_ec2.GatewayVpcEndpointAwsService.S3
-    #     )
-    #   }
-    # )
     EMR_STUDIO_NAME = self.node.try_get_context("emr_studio_name") or "deltalake-demo"
 
-    S3_BUCKET_SUFFIX = ''.join(random.sample((string.ascii_lowercase + string.digits), k=7))
+    # S3_BUCKET_SUFFIX = ''.join(random.sample((string.ascii_lowercase + string.digits), k=7))
     s3_bucket = s3.Bucket(self, "s3bucket",
       removal_policy=cdk.RemovalPolicy.DESTROY, #XXX: Default: cdk.RemovalPolicy.RETAIN - The bucket will be orphaned
-      bucket_name="{studio_name}-emr-studio-{region}-{suffix}".format(
-        studio_name=EMR_STUDIO_NAME, region=cdk.Aws.REGION, suffix=S3_BUCKET_SUFFIX))
+      bucket_name=f"{EMR_STUDIO_NAME}-emr-studio-{self.region}-{self.account}")
 
     sg_emr_studio_workspace = aws_ec2.SecurityGroup(self, 'EmrStudioWorkspaceSG',
       vpc=vpc,
@@ -72,6 +71,9 @@ class EmrStudioStack(Stack):
 
     sg_emr_studio_workspace.add_egress_rule(peer=sg_emr_studio_engine, connection=aws_ec2.Port.tcp(18888),
       description='Allow outbound traffic from WorkspaceSecurityGroup ( from notebook to cluster for port 18888 )')
+    #XXX: Allow outbound traffic to EMR Cluster
+    # sg_emr_studio_workspace.add_egress_rule(peer=aws_ec2.Peer.any_ipv4(), connection=aws_ec2.Port.tcp(18888),
+    #   description='Allow outbound traffic from WorkspaceSecurityGroup ( from notebook to cluster for port 18888 )')
     sg_emr_studio_workspace.add_egress_rule(peer=aws_ec2.Peer.any_ipv4(), connection=aws_ec2.Port.tcp(443))
 
     emr_studio_service_role_policy_doc = aws_iam.PolicyDocument()

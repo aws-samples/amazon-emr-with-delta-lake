@@ -41,7 +41,7 @@ Once the virtualenv is activated, you can install the required dependencies.
 
 ## Prerequsites
 
-To deploy an Amazon EMR cluster, we need to configure the IAM service roles used by Amazon EMR.
+To deploy an Amazon EMR cluster, we need to configure the IAM service roles (`EMR_EC2_DefaultRole` and `EMR_DefaultRole` ) used by Amazon EMR.
 
 We can create the default roles for EMR by running the following command:
 
@@ -57,19 +57,13 @@ At this point you can now synthesize the CloudFormation template for this code.
 You pass context variable such as `vcp_name=<your vpc name>` (e.g. `vpc_name='default'`) in order to use the existing VPC.
 
 <pre>
-(.venv) $ cdk synth -c vpc_name="<i>your-vpc-name</i>"
+(.venv) $ cdk synth
 </pre>
-
-Before deployment, you shuld create the default IAM role `EMR_EC2_DefaultRole` and `EMR_DefaultRole` which can be used when creating the cluster
-
-```
-(.venv) $ aws emr create-default-roles
-```
 
 Use `cdk deploy` command to create the stack shown above.
 
 <pre>
-(.venv) $ cdk deploy -c vpc_name="<i>your-vpc-name</i>"
+(.venv) $ cdk deploy --require-approval never --all
 </pre>
 
 To add additional dependencies, for example other CDK libraries, just add
@@ -119,7 +113,7 @@ Before cleaning up the emr cluster, you need to tunrn off EMR `Termination prote
 
 <pre>
 (.venv) $ aws modify-cluster-attributes --cluster-id <i>your-emr-cluster-id</i> --no-termination-protected
-(.venv) $ cdk destroy --force
+(.venv) $ cdk destroy --force --all
 </pre>
 
 ## Useful commands

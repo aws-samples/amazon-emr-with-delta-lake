@@ -17,7 +17,7 @@ It provides code snippets that show how to read from and write to Delta tables w
    On the EMR Studio Workspace Web Console.
    - Step 1. Create a new workspace without attaching the EMR cluster.
    - Step 2. Stop the workspace.
-   - Step 3. Select the stopped workspace and restart it with **Launch with options**.
+   - Step 3. Select the stopped workspace and restart it using **Launch Workspace > Launch with options**.
 
     :information_source: More information can be found [here](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-create-use-clusters.html).
 8. Upload `deltalake-with-emr-demo.ipynb` into the Jupyter Notebook
@@ -80,6 +80,7 @@ It provides code snippets that show how to read from and write to Delta tables w
 
 | Delta lake version | Apache Spark version |
 |--------------------|----------------------|
+| 3.3.x | 3.5.x |
 | 3.2.x | 3.5.x |
 | 3.1.x | 3.5.x |
 | 3.0.x | 3.5.x |

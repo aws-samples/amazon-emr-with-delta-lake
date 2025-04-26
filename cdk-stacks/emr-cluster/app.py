@@ -15,37 +15,34 @@ class EmrStack(Stack):
   def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
     super().__init__(scope, construct_id, **kwargs)
 
-    EMR_CLUSTER_NAME = cdk.CfnParameter(self, 'EMRClusterName',
-      type='String',
-      description='Amazon EMR Cluster name',
-      default='deltalake-demo'
-    )
-
-    vpc_name = self.node.try_get_context("vpc_name") or "default"
-    vpc = aws_ec2.Vpc.from_lookup(self, "ExistingVPC",
-      is_default=True,
-      vpc_name=vpc_name)
-
-    #XXX: For creating Amazon EMR in a new VPC,
-    # remove comments from the below codes and
-    # comments out vpc = aws_ec2.Vpc.from_lookup(..) codes above,
-    #
-    # vpc = aws_ec2.Vpc(self, "EMRStackVPC",
-    #   max_azs=2,
-    #   gateway_endpoints={
-    #     "S3": aws_ec2.GatewayVpcEndpointOptions(
-    #       service=aws_ec2.GatewayVpcEndpointAwsService.S3
-    #     )
-    #   }
-    # )
+    if str(os.environ.get('USE_DEFAULT_VPC', 'false')).lower() == 'true':
+      vpc_name = self.node.try_get_context('vpc_name') or "default"
+      vpc = aws_ec2.Vpc.from_lookup(self, 'ExistingVPC',
+        is_default=True,
+        vpc_name=vpc_name
+      )
+    else:
+      # XXX: To use more than 2 AZs, be sure to specify the account and region on your stack.
+      # XXX: https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_ec2/Vpc.html
+      vpc = aws_ec2.Vpc(self, "EMRStackVPC",
+        max_azs=2,
+        gateway_endpoints={
+          "S3": aws_ec2.GatewayVpcEndpointOptions(
+            service=aws_ec2.GatewayVpcEndpointAwsService.S3
+          )
+        }
+      )
 
     emr_instances = aws_emr.CfnCluster.JobFlowInstancesConfigProperty(
+      # additional_master_security_groups=[], # A list of additional Amazon EC2 security group IDs for the master node.
+      # additional_slave_security_groups=[], # A list of additional Amazon EC2 security group IDs for the core and task nodes.
       core_instance_group=aws_emr.CfnCluster.InstanceGroupConfigProperty(
-        instance_count=2,
-        instance_type="m5.xlarge",
+        instance_count=3,
+        instance_type="m5.2xlarge",
         market="ON_DEMAND"
       ),
-      ec2_subnet_id=vpc.public_subnets[0].subnet_id,
+      # ec2_subnet_id=vpc.public_subnets[0].subnet_id,
+      ec2_subnet_id=vpc.private_subnets[0].subnet_id,
       keep_job_flow_alive_when_no_steps=True, # After last step completes: Cluster waits
       master_instance_group=aws_emr.CfnCluster.InstanceGroupConfigProperty(
         instance_count=1,
@@ -55,12 +52,13 @@ class EmrStack(Stack):
       termination_protected=False
     )
 
-    emr_version = self.node.try_get_context("emr_version") or "emr-7.2.0"
+    emr_cluster_name = self.node.try_get_context("emr_cluster_name") or "deltalake-demo"
+    emr_version = self.node.try_get_context("emr_version") or "emr-7.8.0"
     emr_cfn_cluster = aws_emr.CfnCluster(self, "MyEMRCluster",
       instances=emr_instances,
       # In order to use the default role for `job_flow_role`, you must have already created it using the CLI or console
       job_flow_role="EMR_EC2_DefaultRole",
-      name=EMR_CLUSTER_NAME.value_as_string,
+      name=emr_cluster_name,
       service_role="EMR_DefaultRole_V2",
       applications=[
         aws_emr.CfnCluster.ApplicationProperty(name="Hadoop"),
