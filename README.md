@@ -18,9 +18,9 @@ It provides code snippets that show how to read from and write to Delta tables w
    - Step 3. Select the stopped workspace and restart it using **Launch Workspace > Launch with options**.
 
     :information_source: More information can be found [here](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-create-use-clusters.html).
-6. Upload `deltalake-with-emr-demo.ipynb` into the Jupyter Notebook
+6. Upload [`src/notebook/deltalake-with-emr-demo.ipynb`](./src/notebook/deltalake-with-emr-demo.ipynb) into the Jupyter Notebook
 7. Set kernel to PySpark, and Run each cells
-8.  For running Amazon Athena queries on Delta Lake, Check [this](./amazon_athena_queries_on_deltalake.md)
+8.  For running Amazon Athena queries on Delta Lake, Check [this](./src/notebook/amazon_athena_queries_on_deltalake.md)
 
 ## Key Configurations
 

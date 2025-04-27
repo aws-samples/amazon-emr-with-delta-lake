@@ -36,7 +36,7 @@ class EmrStack(Stack):
       additional_master_security_groups=[emr_cluster_sg.security_group_id],
       additional_slave_security_groups=[emr_cluster_sg.security_group_id],
       core_instance_group=aws_emr.CfnCluster.InstanceGroupConfigProperty(
-        instance_count=2,
+        instance_count=3,
         instance_type="m5.2xlarge",
         market="ON_DEMAND"
       ),
