@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-import os
-import random
-import string
+# -*- encoding: utf-8 -*-
+# vim: tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 import aws_cdk as cdk
 
@@ -14,47 +13,22 @@ from aws_cdk import (
 )
 from constructs import Construct
 
-random.seed(31)
 
 class EmrStudioStack(Stack):
 
-  def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+  def __init__(self, scope: Construct, construct_id: str, vpc, **kwargs) -> None:
     super().__init__(scope, construct_id, **kwargs)
 
-    #XXX: For creating this CDK Stack in the existing VPC,
-    # remove comments from the below codes and
-    # comments out vpc = aws_ec2.Vpc(..) codes,
-    # then pass -c vpc_name=your-existing-vpc to cdk command
-    # for example,
-    # cdk -c vpc_name=your-existing-vpc syth
-    #
-    vpc_name = self.node.try_get_context("vpc_name") or "default"
-    vpc = aws_ec2.Vpc.from_lookup(self, "ExistingVPC",
-      is_default=True,
-      vpc_name=vpc_name)
-
-    #XXX: To use more than 2 AZs, be sure to specify the account and region on your stack.
-    #XXX: https://docs.aws.amazon.com/cdk/api/latest/python/aws_cdk.aws_ec2/Vpc.html
-    # vpc = aws_ec2.Vpc(self, "EmrStudioVPC",
-    #   max_azs=2,
-    #   gateway_endpoints={
-    #     "S3": aws_ec2.GatewayVpcEndpointOptions(
-    #       service=aws_ec2.GatewayVpcEndpointAwsService.S3
-    #     )
-    #   }
-    # )
     EMR_STUDIO_NAME = self.node.try_get_context("emr_studio_name") or "deltalake-demo"
 
-    S3_BUCKET_SUFFIX = ''.join(random.sample((string.ascii_lowercase + string.digits), k=7))
     s3_bucket = s3.Bucket(self, "s3bucket",
       removal_policy=cdk.RemovalPolicy.DESTROY, #XXX: Default: cdk.RemovalPolicy.RETAIN - The bucket will be orphaned
-      bucket_name="{studio_name}-emr-studio-{region}-{suffix}".format(
-        studio_name=EMR_STUDIO_NAME, region=cdk.Aws.REGION, suffix=S3_BUCKET_SUFFIX))
+      bucket_name=f"{EMR_STUDIO_NAME}-emr-studio-{self.region}-{self.account}")
 
     sg_emr_studio_workspace = aws_ec2.SecurityGroup(self, 'EmrStudioWorkspaceSG',
       vpc=vpc,
       allow_all_outbound=False,
-      description='Workspace security group id associated with the Amazon EMR Studio',
+      description='Workspace Security Group for EMR Studio',
       security_group_name=f'{EMR_STUDIO_NAME}-emr-studio-workspace'
     )
     cdk.Tags.of(sg_emr_studio_workspace).add('Name', 'emr-studio-workspace')
@@ -62,17 +36,22 @@ class EmrStudioStack(Stack):
     sg_emr_studio_engine = aws_ec2.SecurityGroup(self, 'EmrStudioEngineSG',
       vpc=vpc,
       allow_all_outbound=True,
-      description='Amazon EMR Studio Engine security group',
+      description='Engine Security Group for EMR Studio',
       security_group_name=f'{EMR_STUDIO_NAME}-emr-studio-engine'
     )
     cdk.Tags.of(sg_emr_studio_engine).add('Name', 'emr-studio-engine')
 
-    sg_emr_studio_engine.add_ingress_rule(peer=sg_emr_studio_workspace, connection=aws_ec2.Port.tcp(18888),
-      description='Allow inbound traffic to EngineSecurityGroup ( from notebook to cluster for port 18888 )')
+    sg_emr_studio_engine.add_ingress_rule(peer=sg_emr_studio_workspace,
+      connection=aws_ec2.Port.tcp(18888),
+      description='Allow inbound from Workspace Security Group')
 
-    sg_emr_studio_workspace.add_egress_rule(peer=sg_emr_studio_engine, connection=aws_ec2.Port.tcp(18888),
-      description='Allow outbound traffic from WorkspaceSecurityGroup ( from notebook to cluster for port 18888 )')
-    sg_emr_studio_workspace.add_egress_rule(peer=aws_ec2.Peer.any_ipv4(), connection=aws_ec2.Port.tcp(443))
+    sg_emr_studio_workspace.add_egress_rule(peer=sg_emr_studio_engine,
+      connection=aws_ec2.Port.tcp(18888),
+      description='Allow outbound to Engine Security Group')
+    sg_emr_studio_workspace.add_egress_rule(peer=aws_ec2.Peer.any_ipv4(),
+      connection=aws_ec2.Port.tcp(443),
+      description='Allow HTTPS outbound')
+
 
     emr_studio_service_role_policy_doc = aws_iam.PolicyDocument()
 
@@ -247,7 +226,7 @@ class EmrStudioStack(Stack):
     )
 
     # http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-emr-studio.html
-    emr_cfn_studio = aws_emr.CfnStudio(self, "MyCfnEmrStudio",
+    self.emr_studio = aws_emr.CfnStudio(self, "MyCfnEmrStudio",
       auth_mode="IAM", # [IAM, SSO]
       default_s3_location=f"s3://{s3_bucket.bucket_name}",
       engine_security_group_id=sg_emr_studio_engine.security_group_id,
@@ -258,15 +237,22 @@ class EmrStudioStack(Stack):
       workspace_security_group_id=sg_emr_studio_workspace.security_group_id
     )
 
-    cdk.CfnOutput(self, 'EmrStudioName', value=emr_cfn_studio.name)
-    cdk.CfnOutput(self, 'EmrStudioUrl', value=emr_cfn_studio.attr_url)
-    cdk.CfnOutput(self, 'EmrStudioId', value=emr_cfn_studio.attr_studio_id)
-    cdk.CfnOutput(self, 'EmrStudioDefaultS3Location', value=emr_cfn_studio.default_s3_location)
 
-
-app = cdk.App()
-EmrStudioStack(app, "EmrStudioStack", env=cdk.Environment(
-  account=os.getenv('CDK_DEFAULT_ACCOUNT'),
-  region=os.getenv('CDK_DEFAULT_REGION')))
-
-app.synth()
+    cdk.CfnOutput(self, 'EmrStudioName',
+      value=self.emr_studio.name,
+      export_name=f'{self.stack_name}-EmrStudioName')
+    cdk.CfnOutput(self, 'EmrStudioUrl',
+      value=self.emr_studio.attr_url,
+      export_name=f'{self.stack_name}-EmrStudioUrl')
+    cdk.CfnOutput(self, 'EmrStudioId',
+      value=self.emr_studio.attr_studio_id,
+      export_name=f'{self.stack_name}-EmrStudioId')
+    cdk.CfnOutput(self, 'EmrStudioDefaultS3Location',
+      value=self.emr_studio.default_s3_location,
+      export_name=f'{self.stack_name}-EmrStudioDefaultS3Location')
+    cdk.CfnOutput(self, 'EmrStudioEnginSecurityGroupId',
+      value=self.emr_studio.engine_security_group_id,
+      export_name=f'{self.stack_name}-EmrStudioEnginSecurityGroupId')
+    cdk.CfnOutput(self, 'EmrStudioWSSecurityGroupId',
+      value=self.emr_studio.workspace_security_group_id,
+      export_name=f'{self.stack_name}-EmrStudioWSSecurityGroupId')

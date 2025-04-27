@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-import os
+# -*- encoding: utf-8 -*-
+# vim: tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 import aws_cdk as cdk
 
@@ -10,62 +11,56 @@ from aws_cdk import (
 )
 from constructs import Construct
 
+
 class EmrStack(Stack):
 
-  def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
+  def __init__(self, scope: Construct, construct_id: str, vpc, emr_studio, **kwargs) -> None:
     super().__init__(scope, construct_id, **kwargs)
 
-    EMR_CLUSTER_NAME = cdk.CfnParameter(self, 'EMRClusterName',
-      type='String',
-      description='Amazon EMR Cluster name',
-      default='deltalake-demo'
+    emr_studio_engine_sg = aws_ec2.SecurityGroup.from_security_group_id(self,
+      "EMRStudioEngineSG",
+      emr_studio.engine_security_group_id
     )
 
-    vpc_name = self.node.try_get_context("vpc_name") or "default"
-    vpc = aws_ec2.Vpc.from_lookup(self, "ExistingVPC",
-      is_default=True,
-      vpc_name=vpc_name)
-
-    #XXX: For creating Amazon EMR in a new VPC,
-    # remove comments from the below codes and
-    # comments out vpc = aws_ec2.Vpc.from_lookup(..) codes above,
-    #
-    # vpc = aws_ec2.Vpc(self, "EMRStackVPC",
-    #   max_azs=2,
-    #   gateway_endpoints={
-    #     "S3": aws_ec2.GatewayVpcEndpointOptions(
-    #       service=aws_ec2.GatewayVpcEndpointAwsService.S3
-    #     )
-    #   }
-    # )
+    emr_cluster_sg = aws_ec2.SecurityGroup(self, "EMRClusterSG",
+      vpc=vpc,
+      description="Security Group for EMR Cluster"
+    )
+    emr_cluster_sg.add_ingress_rule(
+      peer=emr_studio_engine_sg,
+      connection=aws_ec2.Port.tcp(18888),
+      description="Allow from EMR Studio Engine Security Group"
+    )
 
     emr_instances = aws_emr.CfnCluster.JobFlowInstancesConfigProperty(
+      additional_master_security_groups=[emr_cluster_sg.security_group_id],
+      additional_slave_security_groups=[emr_cluster_sg.security_group_id],
       core_instance_group=aws_emr.CfnCluster.InstanceGroupConfigProperty(
-        instance_count=2,
-        instance_type="m5.xlarge",
+        instance_count=3,
+        instance_type="m5.2xlarge",
         market="ON_DEMAND"
       ),
-      ec2_subnet_id=vpc.public_subnets[0].subnet_id,
+      ec2_subnet_id=emr_studio.subnet_ids[0],
       keep_job_flow_alive_when_no_steps=True, # After last step completes: Cluster waits
       master_instance_group=aws_emr.CfnCluster.InstanceGroupConfigProperty(
         instance_count=1,
-        instance_type="m5.xlarge",
+        instance_type="m5.2xlarge",
         market="ON_DEMAND"
       ),
       termination_protected=False
     )
 
-    emr_version = self.node.try_get_context("emr_version") or "emr-7.2.0"
+    emr_cluster_name = self.node.try_get_context("emr_cluster_name") or "deltalake-demo"
+    emr_version = self.node.try_get_context("emr_version") or "emr-7.8.0"
     emr_cfn_cluster = aws_emr.CfnCluster(self, "MyEMRCluster",
       instances=emr_instances,
       # In order to use the default role for `job_flow_role`, you must have already created it using the CLI or console
       job_flow_role="EMR_EC2_DefaultRole",
-      name=EMR_CLUSTER_NAME.value_as_string,
+      name=emr_cluster_name,
       service_role="EMR_DefaultRole_V2",
       applications=[
         aws_emr.CfnCluster.ApplicationProperty(name="Hadoop"),
         aws_emr.CfnCluster.ApplicationProperty(name="Hive"),
-        aws_emr.CfnCluster.ApplicationProperty(name="JupyterHub"),
         aws_emr.CfnCluster.ApplicationProperty(name="Livy"),
         aws_emr.CfnCluster.ApplicationProperty(name="Spark"),
         aws_emr.CfnCluster.ApplicationProperty(name="JupyterEnterpriseGateway")
@@ -95,13 +90,10 @@ class EmrStack(Stack):
       visible_to_all_users=True
     )
 
-    cdk.CfnOutput(self, 'EmrCluserName', value=emr_cfn_cluster.name)
-    cdk.CfnOutput(self, 'EmrVersion', value=emr_cfn_cluster.release_label)
 
-
-app = cdk.App()
-EmrStack(app, "EmrStack", env=cdk.Environment(
-  account=os.getenv('CDK_DEFAULT_ACCOUNT'),
-  region=os.getenv('CDK_DEFAULT_REGION')))
-
-app.synth()
+    cdk.CfnOutput(self, 'EmrCluserName',
+      value=emr_cfn_cluster.name,
+      export_name=f'{self.stack_name}-EmrCluserName')
+    cdk.CfnOutput(self, 'EmrVersion',
+      value=emr_cfn_cluster.release_label,
+      export_name=f'{self.stack_name}-EmrVersion')
