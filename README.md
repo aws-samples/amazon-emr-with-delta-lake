@@ -66,7 +66,7 @@ It provides code snippets that show how to read from and write to Delta tables w
     }
     </pre>
 
-  > :warning: **YOU NEED** to configure `spark.jar.packages` according to the Delta version that matches your Spark version.
+  > :warning: **YOU NEED** to configure `spark.jar.packages` according to the Delta version that matches your Spark version. Check out [`delta-spark`](https://mvnrepository.com/artifact/io.delta/delta-spark) version.
 
   > :information_source: For more details on `spark.jar.packages`, see [Apache Spark Configuration - Runtime Environment](https://spark.apache.org/docs/latest/configuration.html#runtime-environment)
 
