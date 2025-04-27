@@ -28,7 +28,6 @@ It provides code snippets that show how to read from and write to Delta tables w
 - Amazon EMR Applications
   - Hadoop
   - Hive
-  - JupyterHub
   - JupyterEnterpriseGateway
   - Livy
   - Apache Spark (>= 3.0)
