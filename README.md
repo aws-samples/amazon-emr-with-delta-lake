@@ -14,8 +14,9 @@ It provides code snippets that show how to read from and write to Delta tables w
 
    On the EMR Studio Workspace Web Console.
    - Step 1. Create a new workspace without attaching the EMR cluster.
-   - Step 2. Stop the workspace.
-   - Step 3. Select the stopped workspace and restart it using **Launch Workspace > Launch with options**.
+   - Step 2. Launch the workspace.
+   - Step 3. Attach an EMR Cluster to the Jupyter Notebook.
+      ![emr-studio-notebook-attacth-cluster](./assets/emr-studio-notebook-attacth-cluster.png)
 
     :information_source: More information can be found [here](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-create-use-clusters.html).
 6. Upload [`src/notebook/deltalake-with-emr-demo.ipynb`](./src/notebook/deltalake-with-emr-demo.ipynb) into the Jupyter Notebook
