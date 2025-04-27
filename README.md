@@ -6,7 +6,7 @@ It provides code snippets that show how to read from and write to Delta tables w
 
 ## Quickstart
 
-1. Create an **EMR Studio integrated with EMR on EC2** using AWS CDK (Check details in [instructions](./emr_studio_with_emr_on_ec2/README.md)
+1. Create an **EMR Studio integrated with EMR on EC2** using AWS CDK (Check details in [instructions](./emr_studio_with_emr_on_ec2/README.md))
 2. Open the Amazon EMR console at [https://console.aws.amazon.com/elasticmapreduce/](https://console.aws.amazon.com/elasticmapreduce/)
 3. Open the EMR Studio and create an **EMR Studio Workspace**
 4. Launch the EMR Studio Workspace
