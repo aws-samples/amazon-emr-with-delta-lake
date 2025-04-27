@@ -1,0 +1,5 @@
+{
+  "emr_cluster_name": "deltalake-demo",
+  "emr_version": "emr-7.8.0",
+  "emr_studio_name": "deltalake-demo"
+}

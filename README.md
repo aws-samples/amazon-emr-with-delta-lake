@@ -6,13 +6,11 @@ It provides code snippets that show how to read from and write to Delta tables w
 
 ## Quickstart
 
-1. Create s3 bucket for delta lake (e.g. `learn-deltalake-2022`)
-2. Create an **EMR Cluster** using AWS CDK (Check details in [instructions](./cdk-stacks/emr-cluster/INSTRUCTIONS.md))
-3. Create an **EMR Studio** using AWS CDK (Check details in [instructions](./cdk-stacks/emr-studio/INSTRUCTIONS.md))
-4. Open the Amazon EMR console at [https://console.aws.amazon.com/elasticmapreduce/](https://console.aws.amazon.com/elasticmapreduce/)
-5. Open the EMR Studio and create an **EMR Studio Workspace**
-6. Launch the EMR Studio Workspace
-7. Attach the EMR Cluster to a Jupyter Notebook by following quick guide:
+1. Create an **EMR Studio integrated with EMR on EC2** using AWS CDK (Check details in [instructions](./emr_studio_with_emr_on_ec2/README.md)
+2. Open the Amazon EMR console at [https://console.aws.amazon.com/elasticmapreduce/](https://console.aws.amazon.com/elasticmapreduce/)
+3. Open the EMR Studio and create an **EMR Studio Workspace**
+4. Launch the EMR Studio Workspace
+5. Attach the EMR Cluster to a Jupyter Notebook by following quick guide:
 
    On the EMR Studio Workspace Web Console.
    - Step 1. Create a new workspace without attaching the EMR cluster.
@@ -20,9 +18,9 @@ It provides code snippets that show how to read from and write to Delta tables w
    - Step 3. Select the stopped workspace and restart it using **Launch Workspace > Launch with options**.
 
     :information_source: More information can be found [here](https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-studio-create-use-clusters.html).
-8. Upload `deltalake-with-emr-demo.ipynb` into the Jupyter Notebook
-9. Set kernel to PySpark, and Run each cells
-10. For running Amazon Athena queries on Delta Lake, Check [this](./amazon_athena_queries_on_deltalake.md)
+6. Upload `deltalake-with-emr-demo.ipynb` into the Jupyter Notebook
+7. Set kernel to PySpark, and Run each cells
+8.  For running Amazon Athena queries on Delta Lake, Check [this](./amazon_athena_queries_on_deltalake.md)
 
 ## Key Configurations
 
@@ -60,7 +58,7 @@ It provides code snippets that show how to read from and write to Delta tables w
     <pre>
     {
       "conf": {
-        "spark.jars.packages": "<i>io.delta:delta-spark_2.13:3.1.0</i>",
+        "spark.jars.packages": "<i>io.delta:delta-spark_2.13:3.3.1</i>",
         "spark.sql.extensions": "io.delta.sql.DeltasparkSessionExtension",
         "spark.sql.catalog.spark_catalog": "org.apache.spark.sql.delta.catalog.DeltaCatalog"
         "spark.sql.catalog.spark_catalog.lf.managed": "true"
