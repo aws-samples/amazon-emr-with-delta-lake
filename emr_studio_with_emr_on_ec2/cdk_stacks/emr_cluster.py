@@ -44,7 +44,7 @@ class EmrStack(Stack):
       keep_job_flow_alive_when_no_steps=True, # After last step completes: Cluster waits
       master_instance_group=aws_emr.CfnCluster.InstanceGroupConfigProperty(
         instance_count=1,
-        instance_type="m5.xlarge",
+        instance_type="m5.2xlarge",
         market="ON_DEMAND"
       ),
       termination_protected=False
@@ -61,7 +61,6 @@ class EmrStack(Stack):
       applications=[
         aws_emr.CfnCluster.ApplicationProperty(name="Hadoop"),
         aws_emr.CfnCluster.ApplicationProperty(name="Hive"),
-        aws_emr.CfnCluster.ApplicationProperty(name="JupyterHub"),
         aws_emr.CfnCluster.ApplicationProperty(name="Livy"),
         aws_emr.CfnCluster.ApplicationProperty(name="Spark"),
         aws_emr.CfnCluster.ApplicationProperty(name="JupyterEnterpriseGateway")
